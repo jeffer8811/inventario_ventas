@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Panel Vendedor{% endblock %}
+{% block content %}
+
+{% if session.vista_simulada and session.vista_simulada != usuario.rol %}
+    <p style="color: gray;">
+        Estás viendo como <strong>{{ session.vista_simulada }}</strong> |
+        <a href="{{ url_for('main.cambiar_vista', rol_simulado=usuario.rol) }}">Volver a mi rol real</a>
+    </p>
+{% endif %}
+
+<h2>Panel del Vendedor</h2>
+<p>Bienvenido, {{ usuario.nombre }} ({{ usuario.rol }})</p>
+
+<ul>
+    <li><a href="{{ url_for('main.lista_productos') }}">Ver Productos</a></li>
+    <li><a href="{{ url_for('main.registrar_venta') }}">Registrar Venta</a></li>
+</ul>
+{% endblock %}

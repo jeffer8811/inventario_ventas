@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro</title>
+</head>
+<body>
+    <h2>Registro de Usuario</h2>
+    <form method="POST">
+        <label>Nombre:</label><br>
+        <input type="text" name="nombre" required><br><br>
+
+        <label>Correo:</label><br>
+        <input type="email" name="correo" required><br><br>
+
+        <label>Contraseña:</label><br>
+        <input type="password" name="contraseña" required><br><br>
+
+        <label>Rol:</label><br>
+        <select name="rol" required>
+            <option value="admin">Admin</option>
+            <option value="vendedor">Vendedor</option>
+            <option value="cliente">Cliente</option>
+        </select><br><br>
+
+        <button type="submit">Registrarse</button>
+    </form>
+
+    <p>¿Ya tienes cuenta? <a href="{{ url_for('auth.login') }}">Inicia sesión</a></p>
+
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+        {% for categoria, mensaje in mensajes %}
+            <p style="color:red;">{{ mensaje }}</p>
+        {% endfor %}
+    {% endwith %}
+</body>
+</html>

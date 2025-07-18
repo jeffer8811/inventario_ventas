@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Sesión</title>
+</head>
+<body>
+    <h2>Iniciar sesión</h2>
+    <form method="POST">
+        <label>Correo:</label><br>
+        <input type="email" name="correo" required><br><br>
+
+        <label>Contraseña:</label><br>
+        <input type="password" name="contraseña" required><br><br>
+
+        <button type="submit">Ingresar</button>
+    </form>
+
+    <p>¿No tienes cuenta? <a href="{{ url_for('auth.registro') }}">Regístrate aquí</a></p>
+
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+        {% for categoria, mensaje in mensajes %}
+            <p style="color:red;">{{ mensaje }}</p>
+        {% endfor %}
+    {% endwith %}
+</body>
+</html>

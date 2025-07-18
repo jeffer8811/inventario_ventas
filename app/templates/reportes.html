@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}Reportes de Ventas{% endblock %}
+
+{% block content %}
+<h2>Reportes de Ventas</h2>
+
+<form method="POST">
+    <label for="fecha_inicio">Desde:</label>
+    <input type="date" name="fecha_inicio" required>
+    <label for="fecha_fin">Hasta:</label>
+    <input type="date" name="fecha_fin" required>
+    <button type="submit">Filtrar</button>
+</form>
+
+<hr>
+
+{% if grafico_datos %}
+<canvas id="grafico" width="600" height="300"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('grafico').getContext('2d');
+
+    const data = {
+        datasets: [
+            {% for producto, registros in grafico_datos.items() %}
+            {
+                label: '{{ producto }}',
+                data: [
+                    {% for reg in registros %}
+                        { x: '{{ reg.fecha }}', y: {{ reg.cantidad }} },
+                    {% endfor %}
+                ],
+                borderColor: '#' + Math.floor(Math.random()*16777215).toString(16),
+                borderWidth: 2,
+                fill: false
+            },
+            {% endfor %}
+        ]
+    };
+
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+            parsing: {
+                xAxisKey: 'x',
+                yAxisKey: 'y'
+            },
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'day',
+                        tooltipFormat: 'yyyy-MM-dd',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Fecha'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Cantidad Vendida'
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Cantidad Vendida por Producto'
+                }
+            }
+        }
+    };
+
+    new Chart(ctx, config);
+</script>
+{% else %}
+<p>No hay datos para mostrar. Selecciona un rango de fechas y haz clic en "Filtrar".</p>
+{% endif %}
+
+{% endblock %}

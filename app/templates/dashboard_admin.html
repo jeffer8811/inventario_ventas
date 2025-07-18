@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Panel Admin{% endblock %}
+{% block content %}
+<h2>Panel del Administrador</h2>
+<p>Bienvenido, {{ usuario.nombre }} ({{ usuario.rol }})</p>
+<h3>Ver como:</h3>
+<ul>
+    <li><a href="{{ url_for('main.cambiar_vista', rol_simulado='admin') }}">👑 Admin</a></li>
+    <li><a href="{{ url_for('main.cambiar_vista', rol_simulado='vendedor') }}">🧾 Vendedor</a></li>
+    <li><a href="{{ url_for('main.cambiar_vista', rol_simulado='cliente') }}">🛒 Cliente</a></li>
+</ul>
+
+<ul>
+    <li><a href="{{ url_for('main.lista_productos') }}">Gestión de Productos</a></li>
+    <li><a href="{{ url_for('main.registrar_venta') }}">Registrar Venta</a></li>
+    <li><a href="{{ url_for('main.lista_ventas') }}">Ver Ventas</a></li>
+    <li><a href="{{ url_for('main.reportes') }}">📊 Ver Reportes</a></li>
+
+</ul>
+<div>
+    <p><strong>Total Productos:</strong> {{ total_productos }}</p>
+    <p><strong>Total Ventas:</strong> {{ total_ventas }}</p>
+    <p><strong>Ingresos Totales:</strong> S/. {{ ingresos }}</p>
+
+    {% if producto_mas_vendido %}
+        <p><strong>Producto más vendido:</strong> {{ producto_mas_vendido.nombre }}</p>
+    {% else %}
+        <p>No hay ventas aún.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

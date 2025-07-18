@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Registrar Venta{% endblock %}
+
+{% block content %}
+<h2>Registrar Venta</h2>
+
+<form method="POST">
+    <table>
+        <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Cantidad</th>
+        </tr>
+        {% for producto in productos %}
+        <tr>
+            <td>{{ producto.nombre }}</td>
+            <td>S/. {{ producto.precio }}</td>
+            <td>{{ producto.stock }}</td>
+            <td>
+                <input type="number" name="cantidad_{{ producto.id }}" min="0" max="{{ producto.stock }}" value="0">
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <button type="submit">Registrar Venta</button>
+</form>
+{% endblock %}

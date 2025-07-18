@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Sistema de Inventario{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <header>
+        <h1>Sistema de Inventario y Ventas</h1>
+        {% if current_user.is_authenticated %}
+        <p>Bienvenido, {{ current_user.nombre }} ({{ current_user.rol }})</p>
+        <nav>
+            <a href="{{ url_for('main.inicio') }}">Inicio</a> |
+            <a href="{{ url_for('main.lista_productos') }}">Productos</a> |
+            <a href="{{ url_for('auth.logout') }}">Cerrar sesión</a>
+        </nav>
+        {% else %}
+        <nav>
+            <a href="{{ url_for('auth.login') }}">Iniciar sesión</a> |
+            <a href="{{ url_for('auth.registro') }}">Registrarse</a>
+        </nav>
+        {% endif %}
+        <hr>
+        
+    </header>
+
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+    {% for categoria, mensaje in mensajes %}
+    <p class="{% if categoria == 'success' %}verde{% elif categoria == 'danger' %}rojo{% else %}azul{% endif %}">
+        {{ mensaje }}
+    </p>
+    {% endfor %}
+    {% endwith %}
+
+    {% block content %}
+    <!-- Aquí irá el contenido específico de cada página -->
+    {% endblock %}
+</body>
+
+</html>

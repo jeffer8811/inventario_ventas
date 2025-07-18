@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Panel Cliente{% endblock %}
+{% block content %}
+{% if session.vista_simulada and session.vista_simulada != usuario.rol %}
+    <p style="color: gray;">
+        Estás viendo como <strong>{{ session.vista_simulada }}</strong> |
+        <a href="{{ url_for('main.cambiar_vista', rol_simulado=usuario.rol) }}">Volver a mi rol real</a>
+    </p>
+{% endif %}
+
+<h2>Panel del Cliente</h2>
+<p>Bienvenido, {{ usuario.nombre }} ({{ usuario.rol }})</p>
+
+<p>¡Gracias por registrarte! Próximamente podrás ver productos y hacer compras.</p>
+{% endblock %}

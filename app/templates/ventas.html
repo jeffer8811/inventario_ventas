@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Ventas Registradas{% endblock %}
+
+{% block content %}
+<h2>Ventas Registradas</h2>
+
+{% if ventas %}
+<table border="1" cellpadding="8" cellspacing="0">
+    <tr>
+        <th>ID Venta</th>
+        <th>Fecha</th>
+        <th>Total (S/.)</th>
+        <th>Detalle</th>
+    </tr>
+    {% for venta in ventas %}
+    <tr>
+        <form method="GET" style="margin-bottom: 20px;">
+    <label>Desde:</label>
+    <input type="date" name="desde" value="{{ request.args.get('desde', '') }}">
+    <label>Hasta:</label>
+    <input type="date" name="hasta" value="{{ request.args.get('hasta', '') }}">
+    <button type="submit">Filtrar</button>
+</form>
+
+        <td>{{ venta.id }}</td>
+        <td>{{ venta.fecha.strftime('%d/%m/%Y %H:%M') }}</td>
+        <td>{{ venta.total }}</td>
+        <td>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio Unitario</th>
+                    <th>Cantidad Vendida</th>
+                    <th>Subtotal</th>
+                    <th>Stock después</th>
+                </tr>
+                {% for item in venta.detalles %}
+                <tr>
+                    <td>{{ item.producto.nombre }}</td>
+                    <td>S/. {{ item.producto.precio }}</td>
+                    <td>{{ item.cantidad }}</td>
+                    <td>S/. {{ item.subtotal }}</td>
+                    <td>{{ item.producto.stock }}</td>  {# stock actual #}
+                </tr>
+                {% endfor %}
+            </table>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No hay ventas registradas.</p>
+{% endif %}
+{% endblock %}

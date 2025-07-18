@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Panel Principal{% endblock %}
+
+{% block content %}
+<h2>Panel de Inicio</h2>
+
+<p>{{ mensaje }}</p>
+
+{% if usuario.rol in ['admin', 'vendedor'] %}
+    <a href="{{ url_for('main.lista_productos') }}">Ir a gestión de productos</a>
+{% endif %}
+
+{% endblock %}
