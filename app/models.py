@@ -13,6 +13,7 @@ class Usuario(db.Model, UserMixin):
     correo = db.Column(db.String(100), unique=True, nullable=False)
     contraseña = db.Column(db.String(200), nullable=False)
     rol = db.Column(db.String(20), nullable=False)  # admin, vendedor, cliente
+    estado = db.Column(db.Boolean, default=True)    # ✅ Activo o bloqueado
 
     def __repr__(self):
         return f'<Usuario {self.nombre} - {self.rol}>'
@@ -59,4 +60,7 @@ class DetalleVenta(db.Model):
 
     producto = db.relationship('Producto')  # ✅ Relación directa para acceder al producto
 
+# -----------------------------
+# Modelo DeUsuario
+# -----------------------------
 

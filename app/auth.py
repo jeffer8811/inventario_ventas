@@ -20,14 +20,16 @@ def login():
         usuario = Usuario.query.filter_by(correo=correo).first()
 
         if usuario and bcrypt.check_password_hash(usuario.contraseña, contraseña):
+            if not usuario.estado:
+                flash('Tu cuenta está bloqueada. Contacta con un administrador.', 'danger')
+                return redirect(url_for('auth.login'))
+                
             login_user(usuario)
-            flash('Inicio de sesión exitoso', 'success')
             return redirect(url_for('main.inicio'))
         else:
             flash('Correo o contraseña incorrectos', 'danger')
 
     return render_template('login.html')
-
 
 @auth.route('/registro', methods=['GET', 'POST'])
 def registro():

@@ -1,7 +1,7 @@
 import os
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from .models import Producto, db
+from .models import Producto, Usuario, db
 from .models import Producto, Venta, DetalleVenta, db
 from flask import session
 from werkzeug.utils import secure_filename
@@ -260,3 +260,44 @@ def reportes():
             })
 
     return render_template('reportes.html', productos=productos, grafico_datos=grafico_datos)
+
+
+@main.route('/usuarios')
+@login_required
+def lista_usuarios():
+    if current_user.rol != 'admin':
+        flash('Acceso denegado', 'danger')
+        return redirect(url_for('main.inicio'))
+
+    usuarios = Usuario.query.all()
+    return render_template('usuarios.html', usuarios=usuarios)
+
+
+@main.route('/usuarios/cambiar_rol/<int:id>')
+@login_required
+def cambiar_rol(id):
+    if current_user.rol != 'admin':
+        flash('Acceso denegado', 'danger')
+        return redirect(url_for('main.inicio'))
+
+    user = Usuario.query.get_or_404(id)
+    if user.rol == 'cliente':
+        user.rol = 'vendedor'
+    elif user.rol == 'vendedor':
+        user.rol = 'cliente'
+    db.session.commit()
+    flash(f'Rol cambiado a {user.rol}', 'success')
+    return redirect(url_for('main.lista_usuarios'))
+
+@main.route('/usuarios/estado/<int:id>')
+@login_required
+def toggle_estado(id):
+    if current_user.rol != 'admin':
+        flash('Acceso denegado', 'danger')
+        return redirect(url_for('main.inicio'))
+
+    user = Usuario.query.get_or_404(id)
+    user.estado = not user.estado
+    db.session.commit()
+    flash('Estado actualizado', 'info')
+    return redirect(url_for('main.lista_usuarios'))

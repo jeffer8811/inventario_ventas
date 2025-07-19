@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Gestión de Usuarios{% endblock %}
+
+{% block content %}
+<h2>Gestión de Usuarios</h2>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Rol</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+    </tr>
+    {% for user in usuarios %}
+    <tr>
+        <td>{{ user.nombre }}</td>
+        <td>{{ user.correo }}</td>
+        <td>{{ user.rol }}</td>
+        <td>{{ 'Activo' if user.estado else 'Bloqueado' }}</td>
+        <td>
+            {% if user.rol != 'admin' %}
+                <a href="{{ url_for('main.cambiar_rol', id=user.id) }}">🔁 Cambiar rol</a> |
+                <a href="{{ url_for('main.toggle_estado', id=user.id) }}">
+                    {{ '🚫 Bloquear' if user.estado else '✅ Activar' }}
+                </a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
